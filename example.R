@@ -7,7 +7,7 @@ library(bayesdistreg)
 p = 200;s = 10;K = 10
 sig.beta = 1;sig.delta1 = sig.delta2 = 0.5
 
-n0 = 600;n1 = 600;n.vec = c(n0, rep(n1, K))
+n0 = 150;n1 = 600;n.vec = c(n0, rep(n1, K))
 Sig.X = matrix(0,p,p)
 for (i in 1:p) {
   for (j in 1:p) {
@@ -16,7 +16,7 @@ for (i in 1:p) {
 }
 
 # example
-A = 1.5;M = 3;TU = 4.5
+A = 1.5;M = 2;TU = 1
 size.A0 = 4;d = 8
 #------------------------------------------------  
 coef.all = Coef.gen(s, d = d, q = 2*s, size.A0 = size.A0,  
@@ -47,7 +47,11 @@ for (k in 1:(K + 1)) {
     
 #--------------------------------------------------------------------------
 ###########RIW-TL###################
-fit = fit.RIW(X,y,n.vec,K)
+X0 = X[1:n0,];y0 = y[1:n0]
+fit = cv.ncvreg(X0,y0,family = "gaussian",penalty = "SCAD")
+beta.scad = coef(fit)[-1]
+
+fit = fit.RIW(X,y,n.vec,K,A,M,TU,beta0.initial = beta.scad)
 beta_RIW_TL = fit$beta_RIW_TL
 beta_RIW_TL_P = fit$beta_RIW_TL_P
 beta_RIW_TL_U = fit$beta_RIW_TL_U
