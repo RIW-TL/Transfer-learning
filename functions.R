@@ -18,7 +18,6 @@ library(bayesdistreg)
 # sig.delta2 : negative difference
 # exact: setting fixed / random
 #------------------------------------------------------------
-
 # coefficients generation
 Coef.gen = function(s,d,q, size.A0, K, sig.beta,
                     sig.delta1, sig.delta2, p, exact){
@@ -54,15 +53,13 @@ Coef.gen = function(s,d,q, size.A0, K, sig.beta,
 }
 
 # data splitting in RIW-TL & RIW-TL-U & RIW-TL-P
-fit.RIW.DS = function(X01,Y01,X02,Y02,X03,Y03,
-                      X11,Y11,X12,Y12,X13,Y13,
-                      A,M,TU,K){
+fit.RIW.DS = function(X01,Y01,X11,Y11,X12,Y12,X13,Y13,
+                      A,M,TU,K,beta0.initial){
   
   # Initial estimators
   #---------------------------
-  fit = cv.ncvreg(X01,Y01,family = "gaussian",penalty = "SCAD")
-  beta0.initial.hat = coef(fit)[-1]
-  
+  p = ncol(X01)
+  beta0.initial.hat = beta0.initial
   beta1.initial.hat = matrix(0,p,K);sigma = rep(0,K)
   for (k in 1:K) {
     
@@ -135,7 +132,7 @@ fit.RIW.DS = function(X01,Y01,X02,Y02,X03,Y03,
   }
   
   
-  YY = Y_P = Y_U = Y03;XX = X_P = X_U = X03
+  YY = Y_P = Y_U = Y01;XX = X_P = X_U = X01
   for (k in 1:K) {
     
     id1 = which((abs(error01.hat[[k]]) <= A) & (abs(eta[[k]]) <= M))
@@ -162,15 +159,16 @@ fit.RIW.DS = function(X01,Y01,X02,Y02,X03,Y03,
   list = list(beta_RIW_TL = beta_RIW_TL,
               beta_RIW_TL_P = beta_RIW_TL_P,
               beta_RIW_TL_U = beta_RIW_TL_U,
-              SUR = length(YY),
-              SUR_P = length(Y_P),
-              SUR_U = length(Y_U))
+              SU = length(YY),
+              SU_P = length(Y_P),
+              SU_U = length(Y_U))
 }
 
 # main function in RIW-TL
-fit.RIW = function(X,y,n.vec,K){
+fit.RIW = function(X,y,n.vec,K,A,M,TU,beta0.initial){
   
   # Target and source population
+  n0 = n.vec[1]
   Xdata0 = X[1:n0,]
   Ydata0 = y[1:n0]
   
@@ -183,12 +181,14 @@ fit.RIW = function(X,y,n.vec,K){
   }
   
   # data splitting 
-  X0 = Y0 = X.P1 = Y.P1 = X.P2 = Y.P2 = X.P3 = Y.P3 = list()
+  X0 = Y0 = list()
   for (j in 1:3) {
+    
     X0[[j]] = Xdata0[((j - 1)*floor(n0/3) + 1):(j*floor(n0/3)),]
     Y0[[j]] = Ydata0[((j - 1)*floor(n0/3) + 1):(j*floor(n0/3))]
   }
   
+  X.P1 = Y.P1 = X.P2 = Y.P2 = X.P3 = Y.P3 = list()
   for (k in 1:K) {
     
     X.P1[[k]] = Xdata1[[k]][1:floor(n.vec[k+1]/3),]
@@ -202,37 +202,31 @@ fit.RIW = function(X,y,n.vec,K){
   
   
   fit1 = fit.RIW.DS(X01 = X0[[1]],Y01 = Y0[[1]],
-                    X02 = X0[[2]],Y02 = Y0[[2]],
-                    X03 = X0[[3]],Y03 = Y0[[3]],
                     X11 = X.P1,Y11 = Y.P1,
                     X12 = X.P2,Y12 = Y.P2,
                     X13 = X.P3,Y13 = Y.P3,
-                    A = A,M = M,TU = TU,K = K)
+                    A = A,M = M,TU = TU,K = K,beta0.initial)
   
   fit2 = fit.RIW.DS(X01 = X0[[2]],Y01 = Y0[[2]],
-                    X02 = X0[[3]],Y02 = Y0[[3]],
-                    X03 = X0[[1]],Y03 = Y0[[1]],
                     X11 = X.P2,Y11 = Y.P2,
                     X12 = X.P3,Y12 = Y.P3,
                     X13 = X.P1,Y13 = Y.P1,
-                    A = A,M = M,TU = TU,K = K)
+                    A = A,M = M,TU = TU,K = K,beta0.initial)
   
   fit3 = fit.RIW.DS(X01 = X0[[3]],Y01 = Y0[[3]],
-                    X02 = X0[[1]],Y02 = Y0[[1]],
-                    X03 = X0[[2]],Y03 = Y0[[2]],
                     X11 = X.P3,Y11 = Y.P3,
                     X12 = X.P1,Y12 = Y.P1,
                     X13 = X.P2,Y13 = Y.P2,
-                    A = A,M = M,TU = TU,K = K)
+                    A = A,M = M,TU = TU,K = K,beta0.initial)
   
   
   beta_RIW_TL = (fit1$beta_RIW_TL + fit2$beta_RIW_TL + fit3$beta_RIW_TL)/3
   beta_RIW_TL_P = (fit1$beta_RIW_TL_P + fit2$beta_RIW_TL_P + fit3$beta_RIW_TL_P)/3
   beta_RIW_TL_U = (fit1$beta_RIW_TL_U + fit2$beta_RIW_TL_U + fit3$beta_RIW_TL_U)/3
   
-  SUR = fit1$SUR + fit2$SUR + fit3$SUR
-  SUR_P = fit1$SUR_P + fit2$SUR_P + fit3$SUR_P
-  SUR_U = fit1$SUR_U + fit2$SUR_U + fit3$SUR_U
+  SUR = (fit1$SU + fit2$SU + fit3$SU)/length(y)
+  SUR_P = (fit1$SU_P + fit2$SU_P + fit3$SU_P)/length(y)
+  SUR_U = (fit1$SU_U + fit2$SU_U + fit3$SU_U)/length(y)
   
   list = list(beta_RIW_TL = beta_RIW_TL,
               beta_RIW_TL_P = beta_RIW_TL_P,
