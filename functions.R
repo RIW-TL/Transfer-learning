@@ -461,7 +461,11 @@ fit.RIW.adaptive = function(X,y,n.vec,K,beta0.initial){
               SUR_U = SUR_U)
 }
 
+#=========================competitors============================
+#================================================================
+The implementation of Trans-Lasso and Lasso can be seen in the following website: https://github.com/saili0103/TransLasso.
 
+#=====================other functions============================
 # data id
 ind.set = function(n.vec, k.vec){ 
   ind.re <- NULL
