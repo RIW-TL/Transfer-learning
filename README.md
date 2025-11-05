@@ -20,10 +20,10 @@ The analyzed real data has been provided in the file "data_all.RData". However, 
 
 # 4. Workflow Guide
 ## 4.1 Guide for simulation study
-Step 1: Execute the script Functions.R for comprehensiveness;
-Step 2: Execute the script Example.R, so that it can output the parameter estimates and sample utilization rates for each method. Futhermore, for various experients such as the varying $n_0$ or informative level $d$, one can adjust the corrrepsonding setting. Details can be refer to the inline annotation.
+- Step 1: Execute the script Functions.R for comprehensiveness;
+- Step 2: Execute the script Example.R, so that it can output the parameter estimates and sample utilization rates for each method. Futhermore, for various experients such as the varying $n_0$ or informative level $d$, one can adjust the corrrepsonding setting. Details can be refer to the inline annotation.
 
 ## 4.2 Guide for real data analysis
-Step 1: Open the scipt "Real data processing.R" and load the data in "data_all.RData" (If the data is available; if not, one can jump to the Step 3, wherein the processed data have been uploaded);
-Step 2: Execute the script "Real data processing.R" and then output the processed data, which we call "target.list" for the target data, and "source.list" for the source data.
-Step 3: Execute the script "Real data analysis.R" and one can get the results for real data analysis. Using the inner plot function, one can get the corresponding results on prediction errors.
+- Step 1: Open the scipt "Real data processing.R" and load the data in "data_all.RData" (If the data is available; if not, one can jump to the Step 3, wherein the processed data have been uploaded);
+- Step 2: Execute the script "Real data processing.R" and then output the processed data, which we call "target.list" for the target data, and "source.list" for the source data.
+- Step 3: Execute the script "Real data analysis.R" and one can get the results for real data analysis. Using the inner plot function, one can get the corresponding results on prediction errors.
