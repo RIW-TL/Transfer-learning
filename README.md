@@ -5,7 +5,8 @@ This repository contains the following files with their serve as below.
 - Adaptive rule.R : The RIW-TL using adaptive selection rule for the tuning parameters.
 - Example.R: It provides an example of running the above functions and specifically how to use our method.
 - gene_id.csv: This file contains the covariate information that we focus on in real analysis.
-- GTEx.RData: The collected GTEx data (raw data) in our real analysis.
+- target-list.RData: Since the collected GTEx data (raw data) is too large to upload, we upload the processed target data and source data (below) in our real analysis.
+- source-list.RData: The source data in our real analysis.
 - data processing.R: It includes the preprocessing steps for raw data.
 - data analysis.R: This file records the codes used in analyzing the processed GTEx data.
 - Real data analysis.md: This document provides the code, explanations, and relevant output results for the real data analysis.
