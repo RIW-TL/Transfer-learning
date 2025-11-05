@@ -4,9 +4,13 @@ library(glmnet)
 library(ks)
 library(ncvreg)
 
+#----------------------------
+load("target-list.RData")
+load("source-list.RData")
+
 #---------------------------------------------------
 # p: dimension; K: number of sources; TT: number of target tissues
-p = length(intersect) - 1
+p = ncol(target.list[[1]]) - 1
 K = length(source.list)
 TT = length(target.list)
 p;K;TT
@@ -18,6 +22,7 @@ for (k in 1:TT) {target.list[[k]] = na.omit(target.list[[k]])}
 #-----------------------------------------------------
 
 RPE.result = S.result = PR.result = NR.result = matrix(0,TT,4)
+rownames(RPE.result) = target.tissue.name
 colnames(RPE.result) = colnames(S.result) = colnames(PR.result) = 
   colnames(NR.result) = c("RIW-TL","RIW-TL-U","Trans-Lasso","LASSO")
 
@@ -106,4 +111,5 @@ for (t in 1:TT) {
 
 RPE.result
 S.result;PR.result;NR.result
+
 
