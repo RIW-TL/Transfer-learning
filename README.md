@@ -16,7 +16,7 @@ This repository contains the following files with their serve as below.
 - Packages: Our numerical study relied on the following packages: glmnet, ncvreg, ks, mvtnorm, bayesdistreg, Matrix and stringi. All these packages can be installed using conventional methods, such as input "iinstall.packages("package name") in R.
 
 # 3. Data Acquisition
-The analyzed real data has been provided in the file "data_all.RData".
+The analyzed real data has been provided in the file "data_all.RData". However, the data size is too large to upload. To solve the problem, we have uploaded the processed data (i.e., target-list.RData and source-list.RData). If one is desirable to view the raw data, please contact us with email: a1261110123@163.com
 
 # 4. Workflow Guide
 ## 4.1 Guide for simulation study
