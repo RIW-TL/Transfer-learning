@@ -1,5 +1,4 @@
-# It includes all functions used in our paper, 
-# along with the functions for other competitors such as the Trans-Lasso.
+# It includes all functions used in our paper, together with functions for other competitors such as the Trans-Lasso.
 
 library(ncvreg)
 library(mvtnorm)
