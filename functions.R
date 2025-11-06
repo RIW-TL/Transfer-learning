@@ -77,11 +77,11 @@ fit.RIW.DS = function(X01,Y01,X02,Y02,X11,Y11,X12,Y12,X13,Y13,
   fit = cv.ncvreg(X01,Y01,family = "gaussian",penalty = "SCAD")
   beta0.initial.hat = coef(fit)[-1]
   
-
   beta1.initial.hat = matrix(0,p,K)
   for (k in 1:K) {
 
-    fit = cv.ncvreg(X11[[k]],Y11[[k]],family = "gaussian",penalty = "SCAD")
+    # fit = cv.ncvreg(X11[[k]],Y11[[k]],family = "gaussian",penalty = "SCAD")
+    fit = cv.glmnet(X11[[k]],Y11[[k]],family = "gaussian",alpha = 1)
     beta1.initial.hat[,k] = coef(fit)[-1]
   }
   
@@ -271,7 +271,7 @@ hyper.select.cv = function(X,y,n.vec,K,fold = 5){
       for (f in 1:fold) {
         
         # validation set
-        val.id = ((f - 1)*(n0/fold) + 1):(f*(n0/fold))
+        val.id = ((f - 1)*floor(n0/fold) + 1):(f*floor(n0/fold))
         X.val = X[val.id,]
         y.val = y[val.id]
         
