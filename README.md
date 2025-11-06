@@ -1,7 +1,7 @@
 # 1. Overview
 This repository contains the following files, each serving a specific purpose:
 
-- Main functions.R: It includes main functions used in our paper, along with functions for other competitors such as Trans-Lasso. The specific role of each function can be found in the corresponding inline annotations.
+- Main functions.R: This file contains the main functions used in our paper, together with functions for competing methods such as Trans-Lasso. The specific purpose of each function is documented in the inline annotations.
 - Adaptive rule.R : This file includes the RIW-TL function with an adaptive selection rule for tuning parameters.
 - Example.R: It provides an example of running the above functions and demonstrates how to use our method.
 - gene_id.csv: This file contains the covariate information used in the real data analysis.
