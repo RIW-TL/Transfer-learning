@@ -9,7 +9,7 @@ This repository contains the following files with their serve as below.
 - source-list.RData: The source data in our real analysis.
 - data processing.R: It includes the preprocessing steps for raw data.
 - data analysis.R: This file records the codes used in analyzing the processed GTEx data.
-- Real data analysis.md: This document provides the code, explanations, and relevant output results for the real data analysis.
+- Real data analysis.md: This document provides the code, explanations, and relevant output results for the real data analysis. The output (png) are stored in the file resources.
 
 # 2. Setup Instructions
 - R version: It is sufficient to ensure that the R version is R 4.3.3 or updated ones.
