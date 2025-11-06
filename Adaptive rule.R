@@ -24,13 +24,13 @@ fit.RIW.DS.adaptive = function(X01,Y01,X02,Y02,
   beta0.initial.hat = coef(fit)[-1]
   
   
-  # beta1.initial.hat = matrix(0,p,K)
-  # for (k in 1:K) {
-  #   
-  #   fit = cv.ncvreg(X11[[k]],Y11[[k]],family = "gaussian",penalty = "SCAD")
-  #   beta1.initial.hat[,k] = coef(fit)[-1]
-  # }
-  beta1.initial.hat = B[,-1]
+  beta1.initial.hat = matrix(0,p,K)
+  for (k in 1:K) {
+
+    # fit = cv.ncvreg(X11[[k]],Y11[[k]],family = "gaussian",penalty = "SCAD")
+    fit = cv.glmnet(X11[[k]],Y11[[k]],family = "gaussian",alpha = 1)
+    beta1.initial.hat[,k] = coef(fit)[-1]
+  }
   
 
   #-------------------------------------
@@ -132,7 +132,7 @@ fit.RIW.adaptive = function(X,y,n.vec,K,rho = 0.3, c = 10){
                              X11 = X.P1,Y11 = Y.P1,
                              X12 = X.P2,Y12 = Y.P2,
                              X13 = X.P3,Y13 = Y.P3,
-                             B, rho, c)
+                             rho, c)
 
   
   fit2 = fit.RIW.DS.adaptive(X01 = X01[[2]],Y01 = Y01[[2]],
@@ -140,7 +140,7 @@ fit.RIW.adaptive = function(X,y,n.vec,K,rho = 0.3, c = 10){
                              X11 = X.P2,Y11 = Y.P2,
                              X12 = X.P3,Y12 = Y.P3,
                              X13 = X.P1,Y13 = Y.P1,
-                             B, rho, c)
+                             rho, c)
 
   
   fit3 = fit.RIW.DS.adaptive(X01 = X01[[3]],Y01 = Y01[[3]],
@@ -148,7 +148,7 @@ fit.RIW.adaptive = function(X,y,n.vec,K,rho = 0.3, c = 10){
                              X11 = X.P3,Y11 = Y.P3,
                              X12 = X.P1,Y12 = Y.P1,
                              X13 = X.P2,Y13 = Y.P2,
-                             B, rho, c)
+                             rho, c)
 
   
   
