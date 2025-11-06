@@ -58,30 +58,30 @@ for (t in 1:TT) {
     A = fit$A.opt;
     M = fit$M.opt;
     TU = A + M;
-    fit = fit.RIW(X,y,n.vec,K,A,M,TU)
-    beta_RIW_TL = fit$beta_RIW_TL
+    fit1 = fit.RIW(X,y,n.vec,K,A,M,TU)
+    beta_RIW_TL = fit1$beta_RIW_TL
     
-    ###########RIW-TL###################
+    ###########RIW-TL-U###################
     A = fit$A.opt.u;
     M = fit$M.opt.u;
     TU = A + M;
-    fit = fit.RIW(X,y,n.vec,K,A,M,TU)
-    beta_RIW_TL_U = fit$beta_RIW_TL_U
+    fit1 = fit.RIW(X,y,n.vec,K,A,M,TU)
+    beta_RIW_TL_U = fit1$beta_RIW_TL_U
     
     PE.RIW.TL = norm(X[test,] %*% beta_RIW_TL - y[test],"2")^2/length(test)
     PE.RIW.TL.U = norm(X[test,] %*% beta_RIW_TL_U - y[test],"2")^2/length(test)
     
     ##================Trans-lasso===========================
     id = 1:floor(length(train)/2)
-    prop.re1 = Trans.lasso(X, y, n.vec, I.til = id,selection = T)
+    prop.re1 = Trans.lasso(X, y, n.vec, I.til = id,l1=T)
     id = (floor(length(train)/2) + 1):length(train)
-    prop.re2 = Trans.lasso(X, y, n.vec, I.til = id,selection = T)
+    prop.re2 = Trans.lasso(X, y, n.vec, I.til = id,l1=T)
     beta.trans.lasso = (prop.re1$beta.hat + prop.re2$beta.hat)/2
     
     PE.trans.lasso = norm(X[test,] %*% beta.trans.lasso - y[test],"2")^2/length(test)
     
     ##======================LASSO=========================
-    fit = cv.glmnet(X0,y0,family = "gaussian",alpha = 1)
+    fit = cv.glmnet(X[1:n.vec[1],],y[1:n.vec[1]],family = "gaussian",alpha = 1)
     beta.lasso = coef(fit)[-1]
     PE.lasso = norm(X[test,] %*% beta.lasso - y[test],"2")^2/length(test)
     
@@ -106,7 +106,10 @@ for (t in 1:TT) {
   }
   
   RPE.result[t,] = colMeans(RPE)
-  S.result[t,] = colMeans(S);PR.result[t,] = colMeans(PR);NR.result[t,] = colMeans(NR)
+  
+  S.result[t,] = colMeans(S);
+  PR.result[t,] = colMeans(PR);
+  NR.result[t,] = colMeans(NR)
 }
 
 RPE.result
