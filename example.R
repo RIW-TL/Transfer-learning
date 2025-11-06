@@ -58,15 +58,20 @@ fit = hyper.select.cv(X,y,n.vec,K,fold = 5)
 A = fit$A.opt;
 M = fit$M.opt;
 TU = A + M;
-fit = fit.RIW(X,y,n.vec,K,A,M,TU)
-beta_RIW_TL = fit$beta_RIW_TL
+fit1 = fit.RIW(X,y,n.vec,K,A,M,TU)
+beta_RIW_TL = fit1$beta_RIW_TL
 
-###########RIW-TL###################
+###########RIW-TL-U###################
 A = fit$A.opt.u;
 M = fit$M.opt.u;
 TU = A + M;
-fit = fit.RIW(X,y,n.vec,K,A,M,TU)
-beta_RIW_TL_U = fit$beta_RIW_TL_U
+fit1 = fit.RIW(X,y,n.vec,K,A,M,TU)
+beta_RIW_TL_U = fit1$beta_RIW_TL_U
+
+###########RIW-TL based on adaptive rule####
+# the parameters rho and c can also be selected by cv method
+fit1 = fit.RIW.adaptive(X,y,n.vec,K,rho = 0.3, c = 10)
+beta_RIW_TL_ada = fit1$beta_RIW_TL
 
 ###########Trans-Lasso#############
 prop.re1 <- Trans.lasso(X, y, n.vec, I.til = 1:(n.vec[1]/2), l1 = T)
@@ -81,6 +86,8 @@ beta.lasso = coef(fit)[-1]
 
 #-----------------------------------------------
 sum((beta_RIW_TL - beta0)^2)
+sum((beta_RIW_TL_U - beta0)^2)
+sum((beta_RIW_TL_ada - beta0)^2)
 sum((beta.prop - beta0)^2)
 sum((beta.lasso - beta0)^2)
 
