@@ -4,7 +4,6 @@ library(ncvreg)
 library(mvtnorm)
 library(glmnet)
 library(ks)
-library(bayesdistreg)
 #------------------------------------------------------------
 # coefficients generation
 #===================================================
@@ -114,7 +113,7 @@ fit.RIW.DS = function(X01,Y01,X02,Y02,X11,Y11,X12,Y12,X13,Y13,
     
     
     # RIW-TL-U
-    fenzi = indicat(abs(error01.hat[[k]]),TU)/(2*TU)
+    fenzi = ifelse(abs(error01.hat[[k]]) <= TU, 1/(2*TU), 0)
     fenmu = predict(kde.fit,x = error11.hat[[k]])
     weight_U = fenzi/fenmu
     weight_U[which(fenzi < 0 | fenmu <0)] = 0
