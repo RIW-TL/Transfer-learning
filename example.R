@@ -6,7 +6,6 @@ library(ncvreg)
 library(mvtnorm)
 library(glmnet)
 library(ks)
-library(bayesdistreg)
 #-----------------------------------------------
 
 # parameter setting
