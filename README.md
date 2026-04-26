@@ -1,3 +1,6 @@
+# 0. R package "RIWTrans"
+We developed the R package 'RIWTrans' to run our algorithm. This package can be loaded directly in R by installing the file 'RIWTrans_1.0.tar.gz'. The PDF manual for this package can be found within the file.
+
 # 1. Overview
 This repository contains the following files, each serving a specific purpose:
 
